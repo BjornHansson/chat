@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8" />
+  <title>Chat</title>
+  <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="style.css" rel="stylesheet" />
+  <script src="modernizr/modernizr.min.js"></script>
+</head>
+<body>
+
+<div id="chat" class="container">
+  <div class="hero-unit">
+    <form id="form1">
+      <div class="row-fluid">
+        <div class="span12" id="settings">
+          <h1>Settings</h1>
+          <label>Connect: </label>
+          <input type="text" id="connect_url" required="required" />
+          <label>Username: </label>
+          <input type="text" id="username" />
+          <br />
+          <input id="connect" class="btn btn-success" type="button" value="Connect" />
+        </div>
+        <div class="span12" id="log">
+          <h1>Log</h1>
+          <div id="output" class="output"></div>
+          <br />
+          <label>Send message: </label>
+          <textarea id="message" rows="2"></textarea>
+          <br />
+          <input id="send_message" class="btn btn-primary" type="button" value="Send message" />
+          <input id="close" class="btn btn-danger" type="button" value="Close connection" />
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="jquery/jquery.min.js"></script>
+<!-- The path can change depending on where you install -->
+<script src="node_modules/socket.io/node_modules/socket.io-client/dist/socket.io.js"></script>
+<script src="client.js"></script>
+
+</body>
+</html>
