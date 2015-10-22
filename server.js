@@ -1,38 +1,58 @@
-var app = app = require('http').createServer(handler),
+var app = require('http').createServer(handler),
     io = require('socket.io').listen(app),
     fs = require('fs'),
+    path = require('path'),
     usernames = [],
     temp_name = null,
     id = 1;
 
 app.listen(1337);
 
-function handler(req, res) {
-    fs.readFile(__dirname + '/index.html',
-        function (err, data) {
-            if (err) {
-                res.writeHead(500);
-                return res.end('Error loading index.html');
+// Run a very simple HTTP server
+function handler(request, response) {
+    var filePath = '.' + request.url;
+    if (filePath == './') {
+        filePath = './index.html';
+    }
+
+    var extname = path.extname(filePath);
+    var contentType = 'text/html';
+    switch (extname) {
+        case '.js':
+            contentType = 'text/javascript';
+            break;
+        case '.css':
+            contentType = 'text/css';
+            break;
+        case '.ico':
+            contentType = 'image/x-icon';
+            break;
+    }
+
+    fs.readFile(filePath,
+        function(error, data) {
+            if (error) {
+                response.writeHead(500);
+                return response.end('Error loading file');
             }
-            res.writeHead(200, {
-                'Content-Type': 'text / html'
+            response.writeHead(200, {
+                'Content-Type': contentType
             });
-            res.end(data);
+            response.end(data);
         });
 }
 
-// Avoid injections
-function htmlEntities(str) {
+function replaceHtmlEntities(str) {
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
 // Connection
-io.sockets.on('connection', function (socket) {
+io.sockets.on('connection', function(socket) {
     socket.emit('connected', 'Connected');
 
     // New user/client
-    socket.on('new_username', function (message) {
-        message = htmlEntities(message);
+    socket.on('new_username', function(message) {
+        message = replaceHtmlEntities(message);
         // If the user does not specify a name, or if it is already taken, create a default name
         if (message === null || message === '' || message === usernames[message]) {
             temp_name = 'Anonymous' + id;
@@ -48,8 +68,8 @@ io.sockets.on('connection', function (socket) {
     });
 
     // Chat message is received
-    socket.on('chat', function (message) {
-        message = htmlEntities(message);
+    socket.on('chat', function(message) {
+        message = replaceHtmlEntities(message);
 
         if (socket.username && message) {
             // Foward the message to all clients
@@ -58,7 +78,7 @@ io.sockets.on('connection', function (socket) {
     });
 
     // Disconnect
-    socket.on('disconnect', function () {
+    socket.on('disconnect', function() {
         if (socket.username) {
             // Remove the client from the global list
             usernames.splice(usernames.indexOf(socket.username), 1);

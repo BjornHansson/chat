@@ -62,7 +62,7 @@ $(document).ready(function () {
     // Close the connection to the server
     $('#close').on('click', function () {
         socket.emit('disconnect');
-        socket.close;
+        socket.close();
         location.reload();
     });
 
