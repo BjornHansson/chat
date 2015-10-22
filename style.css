@@ -1,17 +1,17 @@
 #chat {
-	margin-top: 25px;
+    margin-top: 25px;
 }
 
 #chat h1 {
-	font-size: 1.7em;
-	margin: 0 0 20px 0;
+    font-size: 1.7em;
+    margin: 0 0 20px 0;
 }
 
 #chat #output {
-	min-width: 200px;
-	height: 200px;
-	background-color: #fff;
-	border: 1px solid #aaa;
-	overflow: scroll;
-	font-size: 0.8em;
+    min-width: 200px;
+    height: 200px;
+    background-color: #fff;
+    border: 1px solid #aaa;
+    overflow: scroll;
+    font-size: 0.8em;
 }
